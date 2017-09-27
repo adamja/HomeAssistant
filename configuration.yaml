@@ -106,16 +106,10 @@ frontend:
 config:
 
 http:
-  # Uncomment this to add a password (recommended!)
     api_password: !secret api_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   # base_url: example.duckdns.org:8123
 
-# Checks for available updates
-# Note: This component will send some information about your system to
-# the developers to assist with development of Home Assistant.
-# For more information, please see:
-# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
 updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
@@ -150,6 +144,7 @@ input_boolean:
         name: Someone Home
         initial: off
         #icon:
+
     motion_on:
         name: Motion On
         initial: on
@@ -170,14 +165,14 @@ light:
 
             
 mqtt:
-# https://home-assistant.io/components/mqtt/
+  # https://home-assistant.io/components/mqtt/
   broker: !secret mqtt_broker
   port: !secret mqtt_port
   client_id: !secret mqtt_client_id
   keepalive: 60
   username: !secret mqtt_username
   password: !secret mqtt_password
- # certificate: /home/paulus/dev/addtrustexternalcaroot.crt
+  # certificate: /home/paulus/dev/addtrustexternalcaroot.crt
   protocol: 3.1
     
     
@@ -203,7 +198,7 @@ script: !include scripts.yaml
 
 switch:
   - platform: mqtt
-  # https://home-assistant.io/components/switch.mqtt/
+    # https://home-assistant.io/components/switch.mqtt/
     name: RELAY1
     state_topic: "home/outside/sprinklers"
     command_topic: "home/outside/sprinklers/set"

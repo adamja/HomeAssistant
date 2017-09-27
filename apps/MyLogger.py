@@ -25,7 +25,7 @@ class MyLogger:
 
         # Create Logger
         self.logger = logging.getLogger(self.logger_name)
-        # Check if logger already has handlers
+        # Check if logger already has handlers because it was previously created
         if self.logger.handlers:
             for handler in self.logger.handlers:
                 if isinstance(handler, logging.FileHandler):
@@ -84,20 +84,25 @@ class MyLogger:
         """create an error log entry using logging object"""
         self.logger.error(message)
 
-if __name__ == "__main__":
-    myLogger = MyLogger("Logger_name")  # create a logger object
-    myLogger.info("Test")  # send a log
-    myLogger.debug("debug test")
-    myLogger.warning("warning test")
-    myLogger.error("error test")
-
 # -------------------------------------------------------------------------------------------------------------------- #
 
-# Example for using from a different file:
-#
-# from MyLogger import MyLogger
-#
-#
-# log = MyLogger("module name")
-# log.debug("Testing debug logging")
-
+if __name__ == "__main__":
+    log = MyLogger("test", file_location=".", log_level=MyLogger.DEBUG)  # create a logger object
+    log.warning("warning 01")
+    log.info("info 01")
+    log.debug("debug 01")
+    log.set_console_log_level(log.INFO)
+    log.warning("warning 02")
+    log.debug("debug 02")
+    log.info("info 02")
+    log.set_console_log_level(log.WARN)
+    log.warning("warning 03")
+    log.debug("debug 03")
+    log.info("info 03")
+    log.set_console_log_level(log.DEBUG)
+    log.warning("warning 04")
+    log.debug("debug 04")
+    log.info("info 04")
+    log.warning("warning 05")
+    log.debug("debug 05")
+    log.info("info 05")
