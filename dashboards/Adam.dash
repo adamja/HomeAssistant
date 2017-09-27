@@ -1,0 +1,202 @@
+#
+# Main arguments, all optional
+#
+title: Adam's Light Panel
+widget_dimensions: [120, 120]
+widget_margins: [5, 5]
+columns: 3
+global_parameters:
+    use_comma: 0
+    precision: 1
+    use_hass_icon: 1
+
+label:
+    widget_type: label
+    text: Home Lights
+
+#############
+### GROUPS ###
+###########
+    
+all_lights:
+    widget_type: group
+    entity: group.all_lights
+    title: All Lights
+#    on_attributes:
+#        brightness: 255
+#        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+kitchen:
+    widget_type: group
+    entity: group.kitchen_lights
+    title: Kitchen
+#    on_attributes:
+#        brightness: 255
+#        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+
+############
+### LIGHTS ###
+###########
+    
+bathroom:
+    widget_type: light
+    entity: light.bathroom
+    title: Bathroom
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+bedroom:
+    widget_type: light
+    entity: light.bedroom
+    title: Bedroom
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+bedside_one:
+    widget_type: light
+    entity: light.bedside_one
+    title: Adam's Lamp
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+bedside_two:
+    widget_type: light
+    entity: light.bedside_two
+    title: Kayla's Lamp
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+kaylas_study:
+    widget_type: light
+    entity: light.kaylas_study
+    title: Kayla's Study
+#    on_attributes:
+#        brightness: 255
+#        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+sleepout:
+    widget_type: light
+    entity: light.sleepout
+    title: Adam's Study
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+front:
+    widget_type: light
+    entity: light.front
+    title: Front
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+dining:
+    widget_type: light
+    entity: light.dining
+    title: Dining
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+gateway:
+    widget_type: light
+    entity: light.gateway_light_f0b429cc5411
+    title: Gateway
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+    
+hall:
+    widget_type: light
+    entity: light.hall
+    title: Hall
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+laundry:
+    widget_type: light
+    entity: light.laundry
+    title: Laundry
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+lounge:
+    widget_type: light
+    entity: light.lounge
+    title: Lounge
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+    
+toilet:
+    widget_type: light
+    entity: light.toilet
+    title: Toilet
+    on_attributes:
+#        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    icon_style_active: "color:yellow"
+   
+############
+### LAYOUT ###
+###########
+   
+layout:
+    - label(3x1)
+    - all_lights(3x1)
+    - bedside_one(1x1), bedside_two(1x1), bedroom
+    - sleepout(1x1), bathroom
+    - dining, front, hall
+    - kitchen, laundry, toilet
+    - lounge, kaylas_study, gateway

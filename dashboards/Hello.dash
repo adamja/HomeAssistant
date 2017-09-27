@@ -1,0 +1,34 @@
+#
+# Main arguments, all optional
+#
+title: Light Panel
+widget_dimensions: [120, 120]
+widget_margins: [5, 5]
+columns: 3
+global_parameters:
+    use_comma: 0
+    precision: 1
+    use_hass_icon: 1
+
+label:
+    widget_type: label
+    text: Light Panel
+
+test_light:
+    widget_type: light
+    entity: light.sleepout
+    title: Adam's Study
+    on_attributes:
+        brightness: 255
+        color_temp: 400
+    icon_on: mdi-lightbulb-on
+    icon_off: mdi-lightbulb
+    
+layout:
+    - label(3x1)
+    - light.bedside_one, light.bedside_two, light.front
+    - light.hall, light.kitchen_colour, light.kitchen_white
+    - light.kaylas_study, light.sleepout
+    - light.dining, light.lounge
+    - light.laundry, light.toilet
+    - test_light(3x1)

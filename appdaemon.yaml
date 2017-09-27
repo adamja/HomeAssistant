@@ -1,0 +1,352 @@
+AppDaemon:
+  logfile: STDOUT
+  errorfile: STDERR
+  threads: 20
+  time_zone: Australia/Perth
+HADashboard:
+  dash_url: !secret dash_url
+  dash_password: !secret dash_password
+  #dash_dir: defaults to dashboard in config directory
+HASS:
+  ha_url: http://192.168.40.101:8123
+  ha_key: !secret ha_key
+
+# callback_tester:
+    # module: callback_tester
+    # class: CallbackTester
+  
+  ###############
+  ###  RETIC  ###
+  ###############
+
+back_grass:
+    module: retic
+    class: Retic
+    days: mon,tue,wed,thu,fri,sat,sun
+    start_times: 05:30:00
+    duration: 3
+    stations: switch.relay1,switch.relay4
+    raining: input_boolean.raining
+   
+back_garden:
+    module: retic
+    class: Retic
+    days: mon,tue,wed,thu,fri,sat,sun
+    start_times: 05:40:00
+    duration: 3
+    stations: switch.relay1,switch.relay5
+    raining: input_boolean.raining
+    
+front_grass:
+    module: retic
+    class: Retic
+    days: wed,sat
+    start_times: 05:00:00,17:45:00
+    duration: 10
+    stations: switch.relay2,switch.relay3
+    raining: input_boolean.raining
+     
+  #######################
+  ###  BUTTON HEATER  ###
+  #######################
+
+adams_heater_double:
+    module: button_entity
+    class: ButtonEntity
+    buttons: binary_sensor.switch_158d00013f8220
+    devices: switch.plug_158d00010f8e81
+    click_type: double
+    mode: toggle
+
+  #######################
+  ###  MOTION HEATER  ###
+  #######################
+        
+adams_motion_heater:
+    module: motion_heater
+    class: MotionHeater
+    motion_sensor_entity: binary_sensor.motion_sensor_158d00010f7f3c
+    power_socket_entity: switch.plug_158d00010f8e81
+    delay_mins: 15
+    delay_secs: 0
+        
+  #########################
+  ###  NOTIFIER LIGHTS  ###
+  #########################
+front_motion_light_notifier:
+    module: notify_lights
+    class: NotifyLights
+    trigger_entity: binary_sensor.motion_sensor_158d00013fb1c7
+    light_entity: light.sleepout,light.kitchen_colour,light.kaylas_study,light.hall
+    mode: breathe
+    brightness: 255
+    color_name: green
+    period: 1
+    cycles: 3
+ 
+ 
+  #######################
+  ###  MOTION LIGHTS  ###
+  #######################
+adams_study_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.motion_sensor_158d00010f7f3c
+    light: light.sleepout
+    delay: 180
+    listen_mode: event
+    motion_active_entity: input_boolean.motion_on
+ 
+### --------------------------- ###  
+ 
+dining_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.motion_sensor_158d00013fa6a4
+    light: light.dining
+    delay: 60
+    listen_mode: event
+    motion_active_entity: input_boolean.motion_on
+    
+### --------------------------- ###    
+    
+front_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.motion_sensor_158d00013fb1c7
+    light: light.front
+    delay: 60
+    listen_mode: event
+    motion_active_entity: input_boolean.motion_on
+
+### --------------------------- ###  
+    
+hall_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.motion_sensor_158d000112dd62
+    light: light.hall
+    delay: 45
+    listen_mode: event
+    motion_active_entity: input_boolean.motion_on
+    
+### --------------------------- ###  
+    
+kitchen_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.motion_sensor_158d00013fa611
+    light: group.kitchen_lights
+    delay: 180
+    listen_mode: event
+    motion_active_entity: input_boolean.motion_on
+    
+### --------------------------- ###      
+    
+laundry_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.laundry_motion
+    light: light.laundry
+    delay: 60
+    listen_mode: state
+    motion_active_entity: input_boolean.motion_on
+    
+### --------------------------- ###      
+    
+toilet_light_motion:
+    module: motion_lights
+    class: MotionLights
+    motion_sensor_entity: binary_sensor.toilet_motion
+    light: light.toilet
+    delay: 180
+    listen_mode: state
+    motion_active_entity: input_boolean.motion_on
+    
+    
+  #######################
+  ###  BUTTON LIGHTS  ###
+  #######################
+
+adams_bedside_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013f8924
+  lights: light.bedside_one
+  click_type: single
+  mode: toggle
+
+adams_bedside_light_switch_double:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013f8924
+  lights: light.bedside_one,light.bedside_two,light.bedroom
+  click_type: double
+  mode: toggle_multi
+
+adams_bedside_light_switch_LCB:
+  module: lights_cycle_brightness
+  class: Lights_Cycle_Brightness
+  switch_id: binary_sensor.switch_158d00013f8924
+  light_id: light.bedside_one
+  delay: 0.4
+  step: 25
+  minimum: 25
+  maximum: 250
+ 
+  #adams_bedside_light_switch_hold:
+#  module: button_lights
+#  class: ButtonLights
+#  buttons: binary_sensor.switch_158d00013f8924
+#  lights: group.all_lights
+#  click_type: hold
+#  mode: off
+
+#---------------------------#  
+
+adams_study_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013f8220,binary_sensor.switch_158d00013f88bd
+  lights: light.sleepout
+  click_type: single
+  mode: toggle
+  
+adams_study_test_light_switch_LCB:
+  module: lights_cycle_brightness
+  class: Lights_Cycle_Brightness
+  switch_id: binary_sensor.switch_158d00013f8220,binary_sensor.switch_158d00013f88bd
+  light_id: light.sleepout
+  delay: 0.4
+  step: 25
+  minimum: 25
+  maximum: 250
+
+#---------------------------#  
+
+bathroom_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d000186e00b
+  lights: light.bathroom
+  click_type: single
+  mode: toggle  
+
+#---------------------------#  
+
+bedroom_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00012654b9
+  lights: light.bedroom
+  click_type: single
+  mode: toggle    
+
+#---------------------------#  
+
+dining_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00016dc04c
+  lights: light.dining
+  click_type: single
+  mode: toggle    
+
+#---------------------------#  
+
+front_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013f9dbc
+  lights: light.front
+  click_type: single
+  mode: toggle    
+
+#---------------------------#  
+
+hall_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013ecc43
+  lights: light.hall
+  click_type: single
+  mode: toggle    
+
+#---------------------------#
+
+kaylas_bedside_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00018b4fb3
+  lights: light.bedside_two
+  click_type: single
+  mode: toggle
+
+kaylas_bedside_light_switch_double:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00018b4fb3
+  lights: light.bedside_two,light.bedside_one,light.bedroom
+  click_type: double
+  mode: toggle_multi
+
+kaylas_bedside_light_switch_hold:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00018b4fb3
+  lights: group.all_lights
+  click_type: hold
+  mode: off
+
+#---------------------------#
+
+kaylas_study_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d000128c033
+  lights: light.kaylas_study
+  click_type: single
+  mode: toggle  
+
+#---------------------------#
+
+kitchen_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013ecad1
+  lights: light.kitchen_colour,light.kitchen_white
+  click_type: single
+  mode: toggle_multi
+
+#---------------------------#
+
+laundry_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013f8244
+  lights: light.laundry
+  click_type: single
+  mode: toggle
+
+#---------------------------#
+
+lounge_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00013f8776
+  lights: light.lounge
+  click_type: single
+  mode: toggle
+
+#---------------------------#
+
+toilet_light_switch_single:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d000126548f
+  lights: light.toilet
+  click_type: single
+  mode: toggle
+
+#---------------------------#
+

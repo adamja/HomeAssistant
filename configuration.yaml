@@ -1,0 +1,279 @@
+homeassistant:
+    name: Home
+    latitude: !secret latitude
+    longitude: !secret longitude
+    elevation: 21
+    unit_system: metric
+    time_zone: Australia/Perth
+    customize:
+    # Door Sensors
+        binary_sensor.door_window_sensor_158d000110ab28:
+            friendly_name: Back Door Sensor
+        binary_sensor.door_window_sensor_158d0001123802:
+            friendly_name: Front Door Sensor
+            
+    # Motion Sensors
+        binary_sensor.motion_sensor_158d00010f7e84:
+            friendly_name: Lounge Motion
+        binary_sensor.motion_sensor_158d00010f7f3c:
+            friendly_name: Sleepout Motion
+        binary_sensor.motion_sensor_158d000112dd62:
+            friendly_name: Hall Motion
+        # binary_sensor.motion_sensor_158d000120cd69:
+            # friendly_name: 
+        binary_sensor.motion_sensor_158d00013fa611:
+            friendly_name: Kitchen Motion
+        binary_sensor.motion_sensor_158d00013fa6a4:
+            friendly_name: Dining Motion
+        binary_sensor.motion_sensor_158d00013fb1c7:
+            friendly_name: Front Door Motion
+        # binary_sensor.motion_sensor_158d000163e1b5:
+            # friendly_name: 
+        # binary_sensor.motion_sensor_158d000163f0d5:
+            # friendly_name: 
+
+    # Switches
+        binary_sensor.switch_158d000126548f:
+            friendly_name: Toilet Switch
+        binary_sensor.switch_158d00012654b9:
+            friendly_name: Bedroom Switch
+        binary_sensor.switch_158d000128c033:
+            friendly_name: Kaylas Study Switch
+        binary_sensor.switch_158d00013ecad1:
+            friendly_name: Kitchen Switch
+        binary_sensor.switch_158d00013ecc43:
+            friendly_name: Hall Switch
+        binary_sensor.switch_158d00013f817f:
+            friendly_name: Back Door Switch
+        binary_sensor.switch_158d00013f8220:
+            friendly_name: Test Switch
+        binary_sensor.switch_158d00013f8244:
+            friendly_name: Laundry Switch
+        binary_sensor.switch_158d00013f8776:
+            friendly_name: Lounge Switch
+        binary_sensor.switch_158d00013f88bd:
+            friendly_name: Sleepout Switch
+        binary_sensor.switch_158d00013f8924:
+            friendly_name: Bedside One Switch
+        binary_sensor.switch_158d00013f9dbc:
+            friendly_name: Front Door Switch
+        # binary_sensor.switch_158d0001644396:
+            # friendly_name: 
+        # binary_sensor.switch_158d00016444c7:
+            # friendly_name: 
+        # binary_sensor.switch_158d00016dc04c:
+            # friendly_name: 
+        # binary_sensor.switch_158d000186e00b:
+            # friendly_name: 
+        # binary_sensor.switch_158d00018b4fb3:
+            # friendly_name: 
+            
+    # Gateway Light
+        light.gateway_light_f0b429cc5411:
+            friendly_name: Gateway Light
+            
+    # Temperature/Humidity Sensors
+        sensor.humidity_158d000156db38:
+            friendly_name: Lounge Humidity
+        sensor.humidity_158d00015af00b:
+            friendly_name: Bedroom Humidity
+        sensor.illumination_f0b429cc5411:
+            friendly_name: Gateway Light Sensor
+        sensor.temperature_158d000156db38:
+            friendly_name: Lounge Temperature
+        sensor.temperature_158d00015af00b:
+            friendly_name: Bedroom Temperature
+            
+    # Power Switches
+        switch.plug_158d00010f8e81:
+            friendly_name: Adams Heater
+        # switch.plug_158d00010f8e87:
+            # friendly_name: 
+        # switch.plug_158d000123f02a:
+            # friendly_name: 
+        # switch.plug_158d000123f0e1:
+            # friendly_name: 
+        # switch.plug_158d0001a4f651:
+            # friendly_name: 
+        # switch.plug_158d0001a4f692:
+            # friendly_name: 
+
+            
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Uncomment this to add a password (recommended!)
+    api_password: !secret api_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+# Weather prediction
+#sensor:
+#  - platform: yr
+
+# Text to speech
+#tts:
+#  - platform: google
+
+
+
+input_boolean:
+    someone_home:
+        name: Someone Home
+        initial: off
+        #icon:
+    motion_on:
+        name: Motion On
+        initial: on
+        
+    raining:
+        name: Raining
+        initial: on
+
+        
+light:
+  - platform: lifx
+  - platform: yeelight
+    devices:
+        192.168.40.102:
+            name: Bathroom
+        192.168.40.103:
+            name: Bedroom
+
+            
+mqtt:
+# https://home-assistant.io/components/mqtt/
+  broker: !secret mqtt_broker
+  port: !secret mqtt_port
+  client_id: !secret mqtt_client_id
+  keepalive: 60
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+ # certificate: /home/paulus/dev/addtrustexternalcaroot.crt
+  protocol: 3.1
+    
+    
+xiaomi:
+  gateways:
+    - mac:
+      key: !secret xiaomi_gateway_key
+  
+  
+#group: !include groups.yaml
+group:
+    kitchen_lights:
+        name: Kitchen Lights
+        entities:
+            - light.kitchen_white
+            - light.kitchen_colour
+
+            
+automation: !include automations.yaml
+
+
+script: !include scripts.yaml
+
+switch:
+  - platform: mqtt
+  # https://home-assistant.io/components/switch.mqtt/
+    name: RELAY1
+    state_topic: "home/outside/sprinklers"
+    command_topic: "home/outside/sprinklers/set"
+    payload_on: "RELAY1_on"
+    payload_off: "RELAY1_off"
+    qos: 2
+    
+  - platform: mqtt
+    name: RELAY2
+    state_topic: "home/outside/sprinklers"
+    command_topic: "home/outside/sprinklers/set"
+    payload_on: "RELAY2_on"
+    payload_off: "RELAY2_off"
+    qos: 2
+    
+  - platform: mqtt
+    name: RELAY3
+    state_topic: "home/outside/sprinklers"
+    command_topic: "home/outside/sprinklers/set"
+    payload_on: "RELAY3_on"
+    payload_off: "RELAY3_off"
+    qos: 2 
+    
+  - platform: mqtt
+    name: RELAY4
+    state_topic: "home/outside/sprinklers"
+    command_topic: "home/outside/sprinklers/set"
+    payload_on: "RELAY4_on"
+    payload_off: "RELAY4_off"
+    qos: 2 
+    
+  - platform: mqtt
+    name: RELAY5
+    state_topic: "home/outside/sprinklers"
+    command_topic: "home/outside/sprinklers/set"
+    payload_on: "RELAY5_on"
+    payload_off: "RELAY5_off"
+    qos: 2 
+    
+
+binary_sensor:
+  - platform: mqtt
+    state_topic: "home/toilet/msensor/motion"
+    name: "Toilet Motion"
+    qos: 2
+    payload_on: "on"
+    payload_off: "off"
+    
+  # - platform: mqtt
+    # state_topic: "home/toilet/msensor/tamper"
+    # name: "Toilet Tamper"
+    # qos: 2
+    # payload_on: "on"
+    # payload_off: "off"
+    
+  - platform: mqtt
+    state_topic: "home/laundry/msensor/motion"
+    name: "Laundry Motion"
+    qos: 2
+    payload_on: "on"
+    payload_off: "off"
+    
+  # - platform: mqtt
+    # state_topic: "home/laundry/msensor/tamper"
+    # name: "Laundry Tamper"
+    # qos: 2
+    # payload_on: "on"
+    # payload_off: "off"
+    
+
+
+
+    

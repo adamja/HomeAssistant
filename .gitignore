@@ -1,0 +1,18 @@
+# Home Assistant
+secrets.yaml
+.HA_VERSION
+*.db
+*.log
+logs*
+deps
+tts
+.uuid
+
+# Appdaemon
+compiled
+
+# Visual Studio
+.idea
+.vs
+
+__pycache__
