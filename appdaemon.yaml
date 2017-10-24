@@ -8,13 +8,25 @@ HADashboard:
   dash_password: !secret dash_password
   #dash_dir: defaults to dashboard in config directory
 HASS:
-  ha_url: !secret ha_url
+  ha_url: http://192.168.40.101:8123
   ha_key: !secret ha_key
 
-# callback_tester:
-    # module: callback_tester
-    # class: CallbackTester
-  
+callback_tester:
+    module: callback_tester
+    class: CallbackTester
+   
+lights:
+    module: Lights
+    class: Lights
+
+# -------------------------------------------------------------------------------------------------------------------- #
+#  SENSOR MONITOR
+# -------------------------------------------------------------------------------------------------------------------- #
+rain_monitor:
+    module: sensor_monitor
+    class: SensorMonitor
+    sensors: sensor.bom_perth_bom_rain_today,sensor.dark_sky_precip,sensor.dark_sky_precip_intensity,sensor.dark_sky_precip_probability
+
 # -------------------------------------------------------------------------------------------------------------------- #
 # RETIC
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -24,7 +36,7 @@ back_grass:
     class: Retic
     days: mon,tue,wed,thu,fri,sat,sun
     start_times: 05:30:00
-    duration: 3
+    duration: 5
     stations: switch.relay1,switch.relay4
     raining: input_boolean.raining
    
@@ -33,7 +45,7 @@ back_garden:
     class: Retic
     days: mon,tue,wed,thu,fri,sat,sun
     start_times: 05:40:00
-    duration: 3
+    duration: 5
     stations: switch.relay1,switch.relay5
     raining: input_boolean.raining
     
@@ -47,24 +59,40 @@ front_grass:
     raining: input_boolean.raining
      
 # -------------------------------------------------------------------------------------------------------------------- #
-#  BUTTON HEATER
+#  BUTTON HEATER/FAN
 # -------------------------------------------------------------------------------------------------------------------- #
 
-adams_heater_double:
+#adams_heater_double:
+#    module: button_entity
+#    class: ButtonEntity
+#    buttons: binary_sensor.switch_158d00013f8220
+#    devices: switch.plug_158d00010f8e81  # Heater
+#    click_type: double
+#    mode: toggle
+
+adams_fan_double:
     module: button_entity
     class: ButtonEntity
     buttons: binary_sensor.switch_158d00013f8220
-    devices: switch.plug_158d00010f8e81
+    devices: switch.plug_158d00010f8e87  # Fan
     click_type: double
     mode: toggle
 
 # -------------------------------------------------------------------------------------------------------------------- #
-#  MOTION HEATER
+#  MOTION TIMER
 # -------------------------------------------------------------------------------------------------------------------- #
-        
+
+adams_motion_fan:
+    module: motion_timer
+    class: MotionTimer
+    motion_sensor_entity: binary_sensor.motion_sensor_158d00010f7f3c
+    power_socket_entity: switch.plug_158d00010f8e87
+    delay_mins: 15
+    delay_secs: 0
+
 adams_motion_heater:
-    module: motion_heater
-    class: MotionHeater
+    module: motion_timer
+    class: MotionTimer
     motion_sensor_entity: binary_sensor.motion_sensor_158d00010f7f3c
     power_socket_entity: switch.plug_158d00010f8e81
     delay_mins: 15
@@ -84,7 +112,45 @@ front_motion_light_notifier:
     period: 1
     cycles: 3
  
- 
+
+# -------------------------------------------------------------------------------------------------------------------- #
+#  FLUX LIGHTS
+# -------------------------------------------------------------------------------------------------------------------- #
+
+flux_sleepout:
+    module: flux_lights
+    class: FluxLights
+    lights: light.sleepout
+    flux_switch: input_boolean.sleepout_flux_on
+    temp_on: True
+    default_temp: 350
+    min_temp: 250
+    max_temp: 400
+    bright_on: True
+    default_bright: 200
+    min_bright: 50
+    max_bright: 255
+    start_time: sunrise
+    stop_time: 23:00
+
+# -------------------------------------------------------------------------------------------------------------------- #
+
+flux_walkways:
+    module: flux_lights
+    class: FluxLights
+    lights: light.dining,light.hall,light.kitchen_colour,light.kitchen_white,light.laundry,light.toilet,light.lounge
+    flux_switch: input_boolean.flux_on
+    temp_on: True
+    default_temp: 350
+    min_temp: 200
+    max_temp: 400
+    bright_on: True
+    default_bright: 200
+    min_bright: 100
+    max_bright: 255
+    start_time: sunrise
+    stop_time: 23:00
+
 # -------------------------------------------------------------------------------------------------------------------- #
 #  MOTION LIGHTS
 # -------------------------------------------------------------------------------------------------------------------- #
@@ -95,7 +161,7 @@ adams_study_light_motion:
     light: light.sleepout
     delay: 180
     listen_mode: event
-    motion_active_entity: input_boolean.motion_on
+    motion_active_entity: input_boolean.sleepout_motion_on
  
 # -------------------------------------------------------------------------------------------------------------------- #
  
@@ -193,6 +259,7 @@ adams_bedside_light_switch_LCB:
   step: 25
   minimum: 25
   maximum: 250
+  always_down_first: on
  
   #adams_bedside_light_switch_hold:
 #  module: button_lights
@@ -221,6 +288,7 @@ adams_study_test_light_switch_LCB:
   step: 25
   minimum: 25
   maximum: 250
+  always_down_first: on
 
 # -------------------------------------------------------------------------------------------------------------------- # 
 
@@ -240,7 +308,15 @@ bedroom_light_switch_single:
   buttons: binary_sensor.switch_158d00012654b9
   lights: light.bedroom
   click_type: single
-  mode: toggle    
+  mode: toggle
+
+bedroom_light_switch_double:
+  module: button_lights
+  class: ButtonLights
+  buttons: binary_sensor.switch_158d00012654b9
+  lights: light.bedside_one,light.bedside_two,light.bedroom
+  click_type: double
+  mode: toggle_multi
 
 # -------------------------------------------------------------------------------------------------------------------- # 
 
@@ -337,6 +413,16 @@ lounge_light_switch_single:
   lights: light.lounge
   click_type: single
   mode: toggle
+
+lounge_light_switch_LCB:
+  module: lights_cycle_brightness
+  class: Lights_Cycle_Brightness
+  switch_id: binary_sensor.switch_158d00013f8776
+  light_id: light.lounge
+  delay: 0.4
+  step: 25
+  minimum: 25
+  maximum: 250
 
 # -------------------------------------------------------------------------------------------------------------------- #
 

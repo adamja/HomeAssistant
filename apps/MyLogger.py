@@ -12,15 +12,19 @@ class MyLogger:
     WARNING = logging.WARNING
     ERROR = logging.ERROR
 
-    def __init__(self, logger_name, file_location=os.curdir, log_level=DEBUG):
+    def __init__(self, logger_name, module_name="", file_location=os.curdir, log_level=DEBUG):
         """Initialising function"""
         # Logger Settings
         self.logger_name = logger_name
+        self.module_name = module_name
+        if module_name != "":
+            self.module_name = "- {} ".format(module_name)
+
         self.file_timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         self.file_location = file_location
         self.file_name = self.logger_name + "_" + self.file_timestamp + ".log"
         self.log_level = log_level
-        self.formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d - %(levelname)s - %(name)s -  %(message)s',
+        self.formatter = logging.Formatter(fmt='%(asctime)s.%(msecs)03d - %(levelname)s - %(name)s {}-  %(message)s'.format(self.module_name),
                                            datefmt="%Y-%m-%d %H:%M:%S")
 
         # Create Logger

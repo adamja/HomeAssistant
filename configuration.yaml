@@ -87,16 +87,16 @@ homeassistant:
     # Power Switches
         switch.plug_158d00010f8e81:
             friendly_name: Adams Heater
-        # switch.plug_158d00010f8e87:
-            # friendly_name: 
-        # switch.plug_158d000123f02a:
-            # friendly_name: 
-        # switch.plug_158d000123f0e1:
-            # friendly_name: 
-        # switch.plug_158d0001a4f651:
-            # friendly_name: 
-        # switch.plug_158d0001a4f692:
-            # friendly_name: 
+        switch.plug_158d00010f8e87:
+            friendly_name: Adams Fan
+        switch.plug_158d000123f02a:
+            friendly_name: Power 06
+        switch.plug_158d000123f0e1:
+            friendly_name: Power 04
+        switch.plug_158d0001a4f651:
+            friendly_name: Power 05
+        switch.plug_158d0001a4f692:
+            friendly_name: Power 07
 
             
 # Enables the frontend
@@ -130,8 +130,20 @@ logbook:
 sun:
 
 # Weather prediction
-#sensor:
-#  - platform: yr
+# http://www.bom.gov.au/products/IDW60901/IDW60901.94608.shtml
+sensor:
+  - platform: bom
+    station: IDW60901.94608
+    name: Perth BOM
+    monitored_conditions:
+      - rain_trace
+
+  - platform: darksky
+    api_key: !secret darksky_api_key
+    monitored_conditions:
+      - precip_type
+      - precip_intensity
+      - precip_probability
 
 # Text to speech
 #tts:
@@ -141,17 +153,29 @@ sun:
 
 input_boolean:
     someone_home:
-        name: Someone Home
-        initial: off
-        #icon:
+      name: Someone Home
+      initial: off
+      #icon:
+
+    raining:
+      name: Raining
+      initial: on
 
     motion_on:
-        name: Motion On
-        initial: on
-        
-    raining:
-        name: Raining
-        initial: on
+      name: Motion On
+      initial: on
+
+    sleepout_motion_on:
+      name: Sleepout Motion On
+      initial: on
+
+    flux_on:
+      name: Flux On
+      initial: on
+
+    sleepout_flux_on:
+      name: Sleepout Flux On
+      initial: on
 
         
 light:

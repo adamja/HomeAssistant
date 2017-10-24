@@ -1,16 +1,20 @@
-class Test():
-    def __init__(self):
+
+
+class Test:
+    def __init__(self, *args, **kwargs):
         self.test = "Test return"
+        print(kwargs["kayla"])
+        print("kayla" in kwargs.keys())
+        print(kwargs)
         
     def log(self):
         return self.test
-        
-        
-"""
-Using this function:
 
-from test import Test
+if __name__ == "__main__":
+    lol = Test(adam="Adam", kayla="Kayla")
+    dict = {}
 
-        self.test = Test()
-        self.log(self.test.log())
-"""
+    dict["lol"] = "one"
+    dict["lol"] = "two"
+
+    print(dict["lol"])

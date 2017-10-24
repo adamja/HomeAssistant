@@ -57,9 +57,10 @@ class Retic(appapi.AppDaemon):
     def retic_off_callback(self, kwargs):
         self.logger.debug("retic_off_callback() triggered.")
         for station in self.split_device_list(self.stations):
-            self.turn_off(station)
-            self.logger.info("{} turned off".format(station))
-            sleep(1)
+            if self.get_state(station) == "on":
+                self.turn_off(station)
+                self.logger.info("{} turned off".format(station))
+                sleep(1)
 
         # dummy values
         # self.start_times = "17:25:00"

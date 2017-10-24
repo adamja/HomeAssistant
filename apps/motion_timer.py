@@ -6,16 +6,17 @@ from MyLogger import MyLogger
 ### Args ###
 ''' 
 app_name:
-    module: motion_heater
-    class: MotionHeater
+    module: motion_timer
+    class: MotionTimer
     motion_sensor_entity: 
     power_socket_entity: 
     delay_mins: 
     delay_secs:
 '''
 
-class MotionHeater(appapi.AppDaemon):
 
+class MotionTimer(appapi.AppDaemon):
+    """Turns off something if motion has not been detected within the given time frame"""
     def initialize(self):
         # Start logger
         self.logger = MyLogger(__name__ + "-" + self.name, file_location = "/conf/logs/motion_power", log_level=MyLogger.DEBUG)
