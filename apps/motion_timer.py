@@ -1,5 +1,5 @@
 import appdaemon.appapi as appapi
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 
 ### Comments ###
 
@@ -19,9 +19,9 @@ class MotionTimer(appapi.AppDaemon):
     """Turns off something if motion has not been detected within the given time frame"""
     def initialize(self):
         # Start logger
-        self.logger = MyLogger(__name__ + "-" + self.name, file_location = "/conf/logs/motion_power", log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
+        # Start logger
+        self.logger = MyLogger(__name__, file_location="/conf/logs/__name__")
+        self.logger.set_module_name(self.name)
         self.logger.debug("Log Started.")
 
         # Handle

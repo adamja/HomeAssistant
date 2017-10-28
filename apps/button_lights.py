@@ -1,5 +1,5 @@
 import appdaemon.appapi as appapi
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 
 ### Args ###
 # buttons: {entity_id for switches}
@@ -11,10 +11,9 @@ from MyLogger import MyLogger
 class ButtonLights(appapi.AppDaemon):
 
     def initialize(self):
-        # LOGGER
-        self.logger = MyLogger(__name__, module_name=self.name, file_location="/conf/logs", log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
+        # Start logger
+        self.logger = MyLogger(__name__, file_location="/conf/logs/button_lights")
+        self.logger.set_module_name(self.name)
         self.logger.debug("Log Started.")
 
         self.buttons = self.args["buttons"]

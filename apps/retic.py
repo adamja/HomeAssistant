@@ -1,7 +1,7 @@
 import appdaemon.appapi as appapi
 from datetime import datetime, timedelta
 from time import sleep
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 
 ### Comments ###
 
@@ -21,10 +21,8 @@ class Retic(appapi.AppDaemon):
     
     def initialize(self):
         # Start logger
-        self.logger = MyLogger(__name__ + "-" + self.name, file_location="/conf/logs/retic",
-                               log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
+        self.logger = MyLogger(__name__, file_location="/conf/logs/retic")
+        self.logger.set_module_name(self.name)
         self.logger.debug("Log Started.")
 
         self.days = self.args["days"]

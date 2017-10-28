@@ -1,7 +1,7 @@
 import appdaemon.appapi as appapi
 import threading
 import time
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 
 ### Comments ###
 
@@ -31,9 +31,8 @@ adams_bedside_light_switch_LCB:
 class Lights_Cycle_Brightness(appapi.AppDaemon):
     def initialize(self):
         # Start logger
-        self.logger = MyLogger(__name__, module_name=self.name, file_location="/conf/logs", log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
+        self.logger = MyLogger(__name__, file_location="/conf/logs/lights_cycle_brightness")
+        self.logger.set_module_name(self.name)
         self.logger.debug("Log Started.")
 
         # APPDAEMON INPUTS

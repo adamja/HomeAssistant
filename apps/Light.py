@@ -1,5 +1,5 @@
 import appdaemon.appapi as appapi
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 import math
 from datetime import datetime
 from datetime import timedelta
@@ -32,11 +32,10 @@ class Light(appapi.AppDaemon):
         # super.__init__()
         self.entity_id = entity_id
 
-        # LOGGER
-        self.logger = MyLogger(__name__, module_name=self.name, file_location="/conf/logs", log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
-        self.logger.debug("Log Started.")
+        # Start logger
+        self.logger = MyLogger(__name__, file_location="/conf/logs/" + __name__)
+        self.logger.set_module_name(self.name)
+        self.logger.debug("Started.")
 
         # self.default_temp = 300
         self.temp = 300

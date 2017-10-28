@@ -1,5 +1,5 @@
 import appdaemon.appapi as appapi
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 
 ### Args ###
 """
@@ -12,11 +12,10 @@ from MyLogger import MyLogger
 class SensorMonitor(appapi.AppDaemon):
     """Monitor and logs the changes in rain forcast"""
     def initialize(self):
-        # LOGGER
-        self.logger = MyLogger(__name__, file_location="/conf/logs", log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
-        self.logger.debug("Log Started.")
+        # Start logger
+        self.logger = MyLogger(__name__, file_location="/conf/logs/" + __name__)
+        self.logger.set_module_name(self.name)
+        self.logger.debug("Started.")
 
         # APPDAEMON INPUTS
         self.sensors = None

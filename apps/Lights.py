@@ -1,5 +1,5 @@
 from Light import Light
-from MyLogger import MyLogger
+from MyLogger2 import MyLogger
 import appdaemon.appapi as appapi
 
 ### Comments ###
@@ -20,10 +20,9 @@ class Lights(appapi.AppDaemon):
         self.light_list = {}
 
         # LOGGER
-        self.logger = MyLogger(__name__, module_name=self.name, file_location="/conf/logs", log_level=MyLogger.DEBUG)
-        self.logger.set_console_log_level(MyLogger.INFO)
-        self.logger.set_logfile_log_level(MyLogger.DEBUG)
-        self.logger.debug("Log Started.")
+        self.logger = MyLogger(__name__, file_location="/conf/logs/" + __name__)
+        self.logger.set_module_name(self.name)
+        self.logger.debug("Started.")
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # Functions
