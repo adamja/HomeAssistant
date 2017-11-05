@@ -55,6 +55,7 @@ class Lights_Cycle_Brightness(appapi.AppDaemon):
 
     def start_func(self, entity, attributes, old, new, kwargs):
         if new == "on":
+            self.light_list = self.get_app('lights')  # update lights list
             self.t = threading.Thread(target=self.run_thread, args=(entity,))
             self.t.start()
 

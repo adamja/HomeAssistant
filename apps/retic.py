@@ -29,7 +29,9 @@ class Retic(appapi.AppDaemon):
         self.start_times = self.args["start_times"]
         self.duration = self.args["duration"]
         self.stations = self.args["stations"]
-        self.raining = self.args["raining"]
+        self.raining = None
+        if "raining" in self.args.keys():
+            self.raining = self.args["raining"]
         
         # set up callbacks for each time
         for time in self.split_device_list(self.start_times):
@@ -44,13 +46,21 @@ class Retic(appapi.AppDaemon):
         
     def retic_on_callback(self, kwargs):
         self.logger.debug("retic_on_callback() triggered.")
-        if (self.get_state(self.raining) == "off"):   
+        run = False
+
+        if self.raining is not None:
+            if (self.get_state(self.raining) == "off"):
+                run = True
+            else:
+                self.logger.info("Raining is turned on. Retic not being activated")
+        else:
+            run = True
+
+        if run:
             for station in self.split_device_list(self.stations):
                 self.turn_on(station)
                 self.logger.info("{} turned on".format(station))
                 sleep(1)
-        else:
-            self.logger.info("Raining is turned on. Retic not being activated")
     
     def retic_off_callback(self, kwargs):
         self.logger.debug("retic_off_callback() triggered.")

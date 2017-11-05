@@ -159,10 +159,10 @@ class MyLogger:
         self.file_handler.setFormatter(self.formatter)
 
     def remove_file_handler(self):
-        try:
-            self.logger.removeHandler(self.file_handler)  # remove the current file handler
-        except:
-            pass
+        if self.logger.handlers:
+            for handler in self.logger.handlers:
+                if isinstance(handler, WatchedFileHandler):
+                    self.logger.removeHandler(handler)
 
     def add_file_handler(self):
         self.logger.addHandler(self.file_handler)
@@ -200,12 +200,15 @@ class MyLogger:
 
 
 if __name__ == "__main__":
-    # logger = MyLogger("rain", log_level="DEBUG", file_location=os.curdir + "/test/lol")
-    # logger.set_module_name("my app")
-    # logger.info("testing", name="changed it")
-    # logger.info("This is a log message.", name="Front: "+__name__)
-    # logger.log("INFO", "This is a log message2.", name="Back")
-    # logger.log("INFO", "This is a log message3.", name="House")
+    logger = MyLogger("rain", log_level="DEBUG")
+    logger.set_module_name("my app")
+    logger.info("testing", name="changed it")
+    logger.info("This is a log message.", name="Front: "+__name__)
+    logger.log("INFO", "This is a log message2.", name="Back")
+    logger.log("INFO", "This is a log message3.", name="House")
     # logger.debug("This is a log message4.", name="Front")
     # logger.log("WARN", "This is a log message5.", name="Back")
     # logger.log("ERROR", "This is a log message6.")
+    logger2 = MyLogger("rain", log_level="DEBUG")
+    logger2.log("INFO", "This is a log message2.", name="logger2")
+    logger2.log("INFO", "This is a log message3.", name="logger2")

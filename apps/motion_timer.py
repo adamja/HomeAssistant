@@ -20,7 +20,7 @@ class MotionTimer(appapi.AppDaemon):
     def initialize(self):
         # Start logger
         # Start logger
-        self.logger = MyLogger(__name__, file_location="/conf/logs/__name__")
+        self.logger = MyLogger(__name__, file_location="/conf/logs/" + __name__)
         self.logger.set_module_name(self.name)
         self.logger.debug("Log Started.")
 

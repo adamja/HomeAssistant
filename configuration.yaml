@@ -159,7 +159,7 @@ input_boolean:
 
     raining:
       name: Raining
-      initial: on
+      initial: off
 
     motion_on:
       name: Motion On
@@ -177,7 +177,28 @@ input_boolean:
       name: Sleepout Flux On
       initial: on
 
-        
+    manual_retic:
+      name: Run Manual
+      initial: off
+
+input_select:
+  retic_station:
+    name: Retic Station
+    options:
+      - Back Garden
+      - Back Grass
+      - Front Grass
+    icon: mdi:flower
+
+input_number:
+  manual_retic_time:
+    name: Minutes
+    initial: 5
+    min: 0
+    max: 60
+    step: 1
+
+
 light:
   - platform: lifx
   - platform: yeelight
@@ -200,7 +221,7 @@ mqtt:
   protocol: 3.1
     
     
-xiaomi:
+xiaomi_aqara:
   gateways:
     - mac:
       key: !secret xiaomi_gateway_key
@@ -208,11 +229,30 @@ xiaomi:
   
 #group: !include groups.yaml
 group:
-    kitchen_lights:
-        name: Kitchen Lights
-        entities:
-            - light.kitchen_white
-            - light.kitchen_colour
+  garden_tab:
+    view: yes
+    icon: mdi:pine-tree
+    entities:
+      - group.retic
+      - switch.relay1
+      - switch.relay2
+      - switch.relay3
+      - switch.relay4
+      - switch.relay5
+
+  kitchen_lights:
+    name: Kitchen Lights
+    entities:
+      - light.kitchen_white
+      - light.kitchen_colour
+
+  retic:
+    name: Retic
+    entities:
+      - input_boolean.raining
+      - input_select.retic_station
+      - input_boolean.manual_retic
+      - input_number.manual_retic_time
 
             
 automation: !include automations.yaml

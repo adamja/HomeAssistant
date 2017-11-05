@@ -37,10 +37,12 @@ class FluxLights(appapi.AppDaemon):
         self.temp_on = bool(self.args["temp_on"])
         self.default_temp = int(self.args["default_temp"])
         self.min_temp = int(self.args["min_temp"])
+        self.sunset_temp = int(self.args["sunset_temp"])
         self.max_temp = int(self.args["max_temp"])
         self.bright_on = bool(self.args["bright_on"])
         self.default_bright = int(self.args["default_bright"])
         self.min_bright = int(self.args["min_bright"])
+        self.sunset_bright = int(self.args["sunset_bright"])
         self.max_bright = int(self.args["max_bright"])
         self.start_time = self.args["start_time"]
         self.stop_time = self.args["stop_time"]
@@ -60,9 +62,9 @@ class FluxLights(appapi.AppDaemon):
 # -------------------------------------------------------------------------------------------------------------------- #
     def flux_run(self, light):
         # CREATE LIGHT
-        self.light_list.add_light(light, default_temp=self.default_temp, min_temp=self.min_temp, max_temp=self.max_temp,
-                                  default_bright=self.default_bright, min_bright=self.min_bright, max_bright=self.max_bright,
-                                  start_time="sunrise", stop_time="23:00")
+        self.light_list.add_light(light, default_temp=self.default_temp, min_temp=self.min_temp, sunset_temp=self.sunset_temp, max_temp=self.max_temp,
+                                  default_bright=self.default_bright, min_bright=self.min_bright, sunset_bright=self.sunset_bright, max_bright=self.max_bright,
+                                  start_time=self.start_time, stop_time=self.stop_time)
 
         self.logger.info("Started flux for: {}".format(light))
         t = time(0, 0, 0)

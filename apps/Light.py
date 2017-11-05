@@ -149,15 +149,13 @@ class Light(appapi.AppDaemon):
 
     def get_flux_temp(self):
         now_str = datetime.now().strftime(self.FMT)
-        now_dt = self.to_datetime(now_str)  # removes days
+        # now_dt = self.to_datetime(now_str)  # removes days
 
-        if self.time_compare(self.start_time, now_str) and self.time_compare(now_str, self.stop_time):
+        if self.time_compare(self.start_time, now_str) and self.time_compare(now_str, self.sunset_time):
             # start time less than now and stop time more than now
-            temp_diff = self.max_temp - self.min_temp
-            time_steps = self.time_diff(self.start_time, self.stop_time) / temp_diff
-            now_start_diff = now_dt - self.to_datetime(self.start_time)
-            steps = math.ceil(int(now_start_diff / time_steps))
-            temp = self.min_temp + steps
+            temp = self.calc_levels(self.min_temp, self.sunset_temp, self.start_time, self.sunset_time)
+        elif self.time_compare(self.sunset_time, now_str) and self.time_compare(now_str, self.stop_time):
+            temp = self.calc_levels(self.sunset_temp, self.max_temp, self.sunset_time, self.stop_time)
         else:
             # Set to max temp
             temp = self.max_temp
@@ -165,18 +163,34 @@ class Light(appapi.AppDaemon):
 
     def get_flux_bright(self):
         now_str = datetime.now().strftime(self.FMT)
-        now_dt = self.to_datetime(now_str)  # removes days
+        # now_dt = self.to_datetime(now_str)  # removes days
 
-        if self.time_compare(self.start_time, now_str) and  self.time_compare(now_str, self.stop_time):
-            bright_diff = self.max_bright - self.min_bright
-            time_steps = self.time_diff(self.start_time, self.stop_time) / bright_diff
-            now_start_diff = now_dt - self.to_datetime(self.start_time)
-            steps = math.ceil(int(now_start_diff / time_steps))
-            bright = self.max_bright - steps
+        if self.time_compare(self.start_time, now_str) and self.time_compare(now_str, self.sunset_time):
+            bright = self.calc_levels(self.sunset_bright, self.max_bright, self.start_time, self.sunset_time, start_low=False)
+        elif self.time_compare(self.sunset_time, now_str) and self.time_compare(now_str, self.stop_time):
+            bright = self.calc_levels(self.min_bright, self.sunset_bright, self.sunset_time, self.stop_time, start_low=False)
         else:
             # Set to min brightness
             bright = self.min_bright
         return bright
+
+    def calc_levels(self, low_level, high_level, stime, etime, start_low=True):
+        """Calculate the changing levels over time based on a start and stop level and time"""
+        t_str = datetime.now().strftime(self.FMT)
+        t = self.to_datetime(t_str)  # removes days
+
+        level_diff = high_level - low_level
+        if level_diff > 0:
+            time_steps = self.time_diff(stime, etime) / level_diff
+            time_diff = t - self.to_datetime(stime)
+            level_steps = math.ceil(int(time_diff / time_steps))
+            if start_low:
+                level = low_level + level_steps  # color_temp starts low and gets higher
+            else:
+                level = high_level - level_steps  # brightness starts high and gets lower
+        else:
+            level = low_level
+        return level
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # DATE / TIME FUNCTIONS
@@ -193,7 +207,7 @@ class Light(appapi.AppDaemon):
         self.manual_last_triggered = datetime.now()
 
     def time_compare(self, t1, t2):
-        """Returns true if t2 > t1"""
+        """Returns true if t1 < t2"""
         return self.to_datetime(t2) > self.to_datetime(t1)
 
     def time_diff(self, t1, t2):
@@ -251,12 +265,6 @@ class Light(appapi.AppDaemon):
     def update_sunrise_sunset(self):
         self.sunrise_time = self.get_sunrise_stime()
         self.sunset_time = self.get_sunset_stime()
-
-# -------------------------------------------------------------------------------------------------------------------- #
-# LOGGING
-# -------------------------------------------------------------------------------------------------------------------- #
-    def log(self, msg):
-        print(msg)
 
 # -------------------------------------------------------------------------------------------------------------------- #
 # EXAMPLE

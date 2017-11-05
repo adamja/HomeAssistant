@@ -6,7 +6,7 @@ import appdaemon.appapi as appapi
 
 ### Args ###
 '''
-{app_name}:
+{app_name}: 
     module: Lights
     class: Lights
 '''

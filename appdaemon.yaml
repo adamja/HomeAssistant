@@ -47,7 +47,6 @@ back_garden:
     start_times: 05:40:00
     duration: 5
     stations: switch.relay1,switch.relay5
-    raining: input_boolean.raining
     
 front_grass:
     module: retic
@@ -57,6 +56,33 @@ front_grass:
     duration: 10
     stations: switch.relay2,switch.relay3
     raining: input_boolean.raining
+
+retic_manual_back_garden:
+    module: retic_manual
+    class: ReticManual
+    input_select: input_select.retic_station
+    input_boolean: input_boolean.manual_retic
+    input_number: input_number.manual_retic_time
+    station_select_name: Back Garden
+    station_entites: switch.relay1,switch.relay5
+
+retic_manual_back_grass:
+    module: retic_manual
+    class: ReticManual
+    input_select: input_select.retic_station
+    input_boolean: input_boolean.manual_retic
+    input_number: input_number.manual_retic_time
+    station_select_name: Back Grass
+    station_entites: switch.relay1,switch.relay4
+
+retic_manual_front_grass:
+    module: retic_manual
+    class: ReticManual
+    input_select: input_select.retic_station
+    input_boolean: input_boolean.manual_retic
+    input_number: input_number.manual_retic_time
+    station_select_name: Front Grass
+    station_entites: switch.relay2,switch.relay3
      
 # -------------------------------------------------------------------------------------------------------------------- #
 #  BUTTON HEATER/FAN
@@ -77,6 +103,20 @@ adams_fan_double:
     devices: switch.plug_158d00010f8e87  # Fan
     click_type: double
     mode: toggle
+
+# -------------------------------------------------------------------------------------------------------------------- #
+#  DOOR BELL
+# -------------------------------------------------------------------------------------------------------------------- #
+door_bell:
+    module: door_bell
+    class: DoorBell
+    # motion_entity: binary_sensor.motion_sensor_158d00013fb1c7
+    button_entity: binary_sensor.switch_158d00016444c7  # Switch 16
+    gateway_mac: f0b429cc5411
+    tone: 10
+    volume: 100
+    start: 7:00
+    end: 22:00
 
 # -------------------------------------------------------------------------------------------------------------------- #
 #  MOTION TIMER
@@ -125,13 +165,15 @@ flux_sleepout:
     temp_on: True
     default_temp: 350
     min_temp: 250
+    sunset_temp: 300
     max_temp: 400
     bright_on: True
     default_bright: 200
     min_bright: 50
+    sunset_bright: 200
     max_bright: 255
     start_time: sunrise
-    stop_time: 23:00
+    stop_time: "22:00"
 
 # -------------------------------------------------------------------------------------------------------------------- #
 
@@ -143,13 +185,15 @@ flux_walkways:
     temp_on: True
     default_temp: 350
     min_temp: 200
+    sunset_temp: 300
     max_temp: 400
     bright_on: True
     default_bright: 200
     min_bright: 100
+    sunset_bright: 200
     max_bright: 255
     start_time: sunrise
-    stop_time: 23:00
+    stop_time: "22:00"
 
 # -------------------------------------------------------------------------------------------------------------------- #
 #  MOTION LIGHTS
@@ -278,7 +322,7 @@ adams_study_light_switch_single:
   lights: light.sleepout
   click_type: single
   mode: toggle
-  
+
 adams_study_test_light_switch_LCB:
   module: lights_cycle_brightness
   class: Lights_Cycle_Brightness
@@ -317,6 +361,17 @@ bedroom_light_switch_double:
   lights: light.bedside_one,light.bedside_two,light.bedroom
   click_type: double
   mode: toggle_multi
+
+bedroom_light_switch_LCB:
+  module: lights_cycle_brightness
+  class: Lights_Cycle_Brightness
+  switch_id: binary_sensor.switch_158d00012654b9
+  light_id: light.bedroom
+  delay: 0.4
+  step: 25
+  minimum: 25
+  maximum: 250
+  always_down_first: on
 
 # -------------------------------------------------------------------------------------------------------------------- # 
 
